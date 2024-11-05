@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Produk</title>
+</head>
+<body>
+    <h1>Data Kuota Axis</h1>
+    <table border="1" id="kuota-table">
+        <thead>
+            <tr>
+                <th>Nama Kuota</th>
+                <th>Harga Asli</th>
+                <th>Harga Untung</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <h1>Diamond ML</h1>
+    <table border="1" id="ml-table">
+        <thead>
+            <tr>
+                <th>Nama Diamond</th>
+                <th>Harga Asli</th>
+                <th>Harga Untung</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <h1>Diamond FF</h1>
+    <table border="1" id="ff-table">
+        <thead>
+            <tr>
+                <th>Nama Diamond</th>
+                <th>Harga Asli</th>
+                <th>Harga Untung</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        async function fetchData(url, tableId) {
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                const tableBody = document.getElementById(tableId).querySelector("tbody");
+                tableBody.innerHTML = '';
+
+                data.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${item.nama}</td>
+                        <td>Rp${item.harga_asli}</td>
+                        <td>Rp${item.harga_untung}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+        // Panggil setiap endpoint untuk menampilkan data
+        window.onload = () => {
+            fetchData('/api/kuota', 'kuota-table');
+            fetchData('/api/diamond/ml', 'ml-table');
+            fetchData('/api/diamond/ff', 'ff-table');
+        };
+    </script>
+</body>
+</html>
